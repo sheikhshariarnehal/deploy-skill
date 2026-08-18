@@ -1,93 +1,80 @@
-# 🚀 Deploy Skill — Antigravity Agent Skill
+# Deploy & Push Agent Skills (`deploy-skill`)
 
-An Antigravity IDE agent skill that automates the complete **GitHub → Vercel deployment lifecycle** from a single `/deploy` command.
+Cross-platform AI agent skills for automated deployment to Vercel (`/deploy`) and safe conventional commits & pushes to GitHub (`/push`). Works seamlessly with **Antigravity IDE**, **Claude Code**, **Cursor**, **Codex CLI**, and **Grok Build**.
 
-## What It Does
-
-When you type `/deploy`, this skill:
-
-1. **Discovers** your project (GitHub repo, branch, framework, Vercel project)
-2. **Detects** code changes by comparing local files against GitHub HEAD
-3. **Validates** dependencies and runs the build locally
-4. **Auto-fixes** obvious issues (wrong imports, missing types, etc.)
-5. **Commits** with meaningful conventional commit messages
-6. **Pushes** to GitHub via the MCP `push_files` tool
-7. **Deploys** via Vercel MCP (`create_git_project` or `deploy_to_vercel`)
-8. **Monitors** deployment status until READY or ERROR
-9. **Recovers** from errors by reading Vercel build logs and auto-fixing
-10. **Reports** the final deployment URL and status
-
-## Requirements
-
-- [Antigravity IDE](https://antigravity.dev) with MCP support
-- **GitHub MCP** server configured and authenticated
-- **Vercel MCP** server configured and authenticated
-- A project with a GitHub repository
-- A Vercel project (will be created automatically if not existing)
+---
 
 ## Installation
 
-### Per-Project (Recommended)
+### Option 1: CLI Installer (Recommended)
 
-Copy the `.agents/skills/deploy/` directory into your project:
+From the root of your project, run:
 
-```
-your-project/
-├── .agents/
-│   └── skills/
-│       └── deploy/         ← Copy the entire deploy folder here
-├── app/
-├── package.json
-└── ...
+```bash
+npx deploy-skill install
 ```
 
-### Global (All Projects)
+This interactive CLI automatically detects your installed AI agent harnesses (for example `Antigravity IDE / Gemini CLI`, `Claude Code`, `Cursor`, `Codex`, or `Grok`), lets you keep the detected set or customize providers, and asks whether to install into the current project or globally.
 
-Copy to your global config:
+#### Non-Interactive Scripting Mode
 
-```
-~/.gemini/config/skills/deploy/
-```
+Use CLI flags to skip interactive prompts in automated scripts:
 
-## Usage
+```bash
+# Install into Antigravity IDE & Claude Code for current project
+npx deploy-skill install --providers=antigravity,claude --scope=project
 
-Type `/deploy` in the Antigravity IDE chat, or ask:
-- "deploy this project"
-- "push and deploy"
-- "ship it"
-
-## Skill Architecture
-
-```
-.agents/skills/deploy/
-├── SKILL.md                    — Main orchestrator & state machine
-├── workflows/
-│   ├── deploy.md               — Full 9-phase deployment workflow
-│   ├── validate.md             — Dependency analysis + build validation
-│   ├── repair.md               — Error recovery + retry management
-│   └── rollback.md             — Guided rollback procedure
-├── rules/
-│   ├── github.md               — GitHub MCP tool reference & commit rules
-│   ├── vercel.md               — Vercel MCP tool reference & deployment rules
-│   ├── dependencies.md         — Dependency analysis & compatibility
-│   ├── errors.md               — 6-category error classification taxonomy
-│   └── safety.md               — NEVER/ALWAYS rules & secret detection
-└── prompts/
-    └── error-classifier.md     — Structured error classification prompt
+# Install globally across all detected providers
+npx deploy-skill install --providers=all --scope=global
 ```
 
-## Safety
+---
 
-- **Never** leaks secrets, force-pushes, or retries infinitely
-- **Never** modifies unrelated files or disables security checks
-- **Always** validates before committing, explains auto-fixes
-- **Always** asks before risky changes (major upgrades, dependency removal)
-- **Max 3** automatic retry attempts before escalating to user
+## Refresh & Update
 
-## Supported Frameworks
+To update an existing installation to the latest skill definitions, run:
 
-Next.js, React (Vite/CRA), Vue.js / Nuxt, Svelte / SvelteKit, Astro, Angular, Static sites
+```bash
+npx deploy-skill update
+```
+
+Or specify flags:
+
+```bash
+npx deploy-skill update --providers=all --scope=both
+```
+
+---
+
+## Included Agent Skills
+
+### 1. `/deploy` — GitHub → Vercel Deployment Agent
+- Performs project discovery & lockfile analysis.
+- Runs pre-deployment code validation (`lint`, `typecheck`, `build`).
+- Commits and pushes changes to GitHub via MCP.
+- Triggers and monitors Vercel deployments.
+- Automatically diagnoses and recovers from build errors.
+
+### 2. `/push` — Conventional Commit & Push Agent
+- Audits local workspace changes against GitHub HEAD.
+- Performs pre-commit secret scanning (detects API keys, tokens, credentials).
+- Generates semantic conventional commit messages (`feat:`, `fix:`, `chore:`, `refactor:`).
+- Pushes files safely via GitHub MCP with local `git` CLI fallback.
+
+---
+
+## Supported Providers & Target Directories
+
+| Provider | Project Scope Path | Global Scope Path |
+|----------|-------------------|-------------------|
+| **Antigravity IDE / Gemini CLI** | `.agents/skills/` | `~/.gemini/config/skills/` |
+| **Claude Code** | `.claude/skills/` | `~/.claude/skills/` |
+| **Cursor** | `.cursor/skills/` | `~/.cursor/skills/` |
+| **Codex CLI** | `.codex/skills/` | `~/.codex/skills/` |
+| **Grok Build** | `.grok/skills/` | `~/.grok/skills/` |
+
+---
 
 ## License
 
-MIT
+MIT © [Sheikh Shariar Nehal](https://github.com/sheikhshariarnehal)
