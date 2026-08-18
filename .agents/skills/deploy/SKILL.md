@@ -26,7 +26,8 @@ This skill requires two MCP servers to be configured:
 1. **GitHub MCP** — For repository operations (reading files, committing, pushing)
 2. **Vercel MCP** — For deployment operations (deploying, monitoring, reading logs)
 
-If either MCP is unavailable, inform the user and stop.
+If either MCP is unavailable, do NOT stop. Instead, run the MCP setup workflow
+from [setup-mcp.md](./workflows/setup-mcp.md) to guide the user through installation.
 
 ---
 
@@ -66,6 +67,25 @@ DISCOVER → INSPECT → VALIDATE → [WAIT_FOR_USER] → COMMIT → PUSH
 ## Execution Phases
 
 Follow these phases in strict order. Reference the linked documents for detailed instructions.
+
+### Phase 0 — MCP Pre-flight Check
+**Reference**: [setup-mcp.md → Phase 0](./workflows/setup-mcp.md)
+
+**Always run this first, before anything else.**
+
+1. Probe GitHub MCP availability
+2. Probe Vercel MCP availability
+3. If both are available → proceed to Phase 1
+4. If one or both are missing:
+   - Announce which MCPs are missing
+   - Guide user through API key creation with step-by-step instructions and URLs
+   - Write the MCP config to the global config file
+   - Prompt user to restart Antigravity IDE
+   - After restart, re-verify and proceed to Phase 1
+
+See [setup-mcp.md](./workflows/setup-mcp.md) for the complete setup procedure.
+
+---
 
 ### Phase 1 — Project Discovery
 **Reference**: [deploy.md → Phase 1](./workflows/deploy.md)
@@ -224,3 +244,22 @@ Critical rules summary:
 For detailed MCP usage rules, see:
 - [GitHub MCP Rules](./rules/github.md)
 - [Vercel MCP Rules](./rules/vercel.md)
+
+---
+
+## MCP Setup (First-Time Users)
+
+If either MCP is not configured, refer to:
+- [MCP Setup Workflow](./workflows/setup-mcp.md) — full guide with API key instructions, config file writing, and verification
+
+### Quick MCP Status Check
+| MCP | How to Detect |
+|-----|---------------|
+| GitHub missing | `github.get_file_contents` returns "tool not found" |
+| Vercel missing | `vercel.list_teams` returns "tool not found" |
+
+### Required Tokens
+| Service | Where to get it | Permission needed |
+|---------|----------------|-------------------|
+| GitHub | https://github.com/settings/tokens?type=beta | Contents: Read+Write |
+| Vercel | https://vercel.com/account/tokens | Full Account scope |
