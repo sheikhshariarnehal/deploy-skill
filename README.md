@@ -11,7 +11,7 @@ Cross-platform AI agent skills for automated deployment to Vercel (`/deploy`) an
 From the root of your project, run:
 
 ```bash
-npx deploy-skill install
+npx github:sheikhshariarnehal/deploy-skill install
 ```
 
 This interactive CLI automatically detects your installed AI agent harnesses (for example `Antigravity IDE / Gemini CLI`, `Claude Code`, `Cursor`, `Codex`, or `Grok`), lets you keep the detected set or customize providers, and asks whether to install into the current project or globally.
@@ -22,10 +22,10 @@ Use CLI flags to skip interactive prompts in automated scripts:
 
 ```bash
 # Install into Antigravity IDE & Claude Code for current project
-npx deploy-skill install --providers=antigravity,claude --scope=project
+npx github:sheikhshariarnehal/deploy-skill install --providers=antigravity,claude --scope=project
 
 # Install globally across all detected providers
-npx deploy-skill install --providers=all --scope=global
+npx github:sheikhshariarnehal/deploy-skill install --providers=all --scope=global
 ```
 
 ---
@@ -35,13 +35,13 @@ npx deploy-skill install --providers=all --scope=global
 To update an existing installation to the latest skill definitions, run:
 
 ```bash
-npx deploy-skill update
+npx github:sheikhshariarnehal/deploy-skill update
 ```
 
 Or specify flags:
 
 ```bash
-npx deploy-skill update --providers=all --scope=both
+npx github:sheikhshariarnehal/deploy-skill update --providers=all --scope=both
 ```
 
 ---

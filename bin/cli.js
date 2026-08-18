@@ -43,8 +43,8 @@ function printHelp() {
 🚀 deploy-skill CLI Installer v${pkg.version}
 
 Usage:
-  npx deploy-skill install [options]
-  npx deploy-skill update  [options]
+  npx github:sheikhshariarnehal/deploy-skill install [options]
+  npx github:sheikhshariarnehal/deploy-skill update  [options]
 
 Options:
   --providers=<p1,p2>  Providers to install into (antigravity, claude, cursor, codex, grok, all)
@@ -53,9 +53,9 @@ Options:
   -v, --version       Show version
 
 Examples:
-  npx deploy-skill install
-  npx deploy-skill install --providers=antigravity,claude --scope=project
-  npx deploy-skill update  --providers=all --scope=global
+  npx github:sheikhshariarnehal/deploy-skill install
+  npx github:sheikhshariarnehal/deploy-skill install --providers=antigravity,claude --scope=project
+  npx github:sheikhshariarnehal/deploy-skill update  --providers=all --scope=global
 `);
 }
 
